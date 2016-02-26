@@ -26,7 +26,14 @@ while getopts "hs" o; do
     esac
 done
 
+if [ ! -f /usr/bin/nodejs ]; then
+    curl -sL https://deb.nodesource.com/setup | sudo bash -
+    sudo apt-get install nodejs -i
+fi
 cd /vagrant/data/magento2
+
+
+
 rm -rf var/*
 rm var/.maintenance.flag
 
@@ -68,4 +75,9 @@ install_cmd="./bin/magento setup:install \
 eval ${install_cmd}
 
 #change directory back to where user ran script
+npm install grunt --save-dev
+npm install
+npm update
+grunt exec
+grunt less
 cd -

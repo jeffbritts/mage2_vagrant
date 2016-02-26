@@ -26,6 +26,7 @@ class { 'dotdeb':
   stage => 'first'
 }
 
+
 class { 'composer':
   command_name => 'composer',
   target_dir   => '/usr/local/bin',
@@ -48,6 +49,7 @@ package { [
   'mysqltuner',
   'nfs-common',
   'git',
+  'curl',
 ]:
   ensure  => 'latest',
   require => Exec['apt-get update']
@@ -236,7 +238,19 @@ file { '/home/vagrant/.bash_aliases':
   mode     => '0755',
   require  => File['/home/vagrant/bin']
 }
-
+file { '/home/vagrant/.composer':
+  ensure   => 'directory',
+  owner    => 'vagrant',
+  group    => 'vagrant',
+  mode     => '0755'
+}
+file { '/home/vagrant/.composer/auth.json':
+  ensure   => 'directory',
+  owner    => 'vagrant',
+  group    => 'vagrant',
+  source   => '/vagrant/files/auth.json',
+  mode     => '0755'
+}
 #########
 # crons #
 #########
