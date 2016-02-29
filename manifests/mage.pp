@@ -50,6 +50,7 @@ package { [
   'nfs-common',
   'git',
   'curl',
+  'bzip2',
 ]:
   ensure  => 'latest',
   require => Exec['apt-get update']

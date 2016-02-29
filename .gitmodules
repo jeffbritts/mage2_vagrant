@@ -13,3 +13,6 @@
 [submodule "data/magento2-sample-data"]
 	path = data/magento2-sample-data
 	url = https://github.com/magento/magento2-sample-data.git
+[submodule "data/magento2ee"]
+	path = data/magento2ee
+	url = https://github.com/magento/magento2ee

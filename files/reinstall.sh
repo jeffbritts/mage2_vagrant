@@ -9,12 +9,13 @@ This script reinstalls magento 2
 
 OPTONS:
     -s Include Sample Data
+    -e Include Enterprise Modules
     -h Show this message
 EOF
 }
-
+EE=
 SAMPLE_DATA=
-while getopts "hs" o; do
+while getopts "hse" o; do
     case "${o}" in
         s)
             SAMPLE_DATA=1
@@ -23,12 +24,16 @@ while getopts "hs" o; do
             usage
             exit 1
             ;;
+        e)
+            EE=1
+            ;;
     esac
 done
 
 if [ ! -f /usr/bin/nodejs ]; then
     curl -sL https://deb.nodesource.com/setup | sudo bash -
-    sudo apt-get install nodejs -i
+    sudo apt-get install nodejs -y
+    sudo npm install -g grunt-cli
 fi
 cd /vagrant/data/magento2
 
@@ -36,6 +41,11 @@ cd /vagrant/data/magento2
 
 rm -rf var/*
 rm var/.maintenance.flag
+
+if [[ -n $EE ]]; then
+    echo "[+] Install Enterprise Edition"
+    cp -rp /vagrant/data/magento2ee/* /vagrant/data/magento2
+fi
 
 if [[ -n $SAMPLE_DATA ]]; then
     echo "[+] Install sample data"
@@ -74,10 +84,10 @@ install_cmd="./bin/magento setup:install \
 
 eval ${install_cmd}
 
-#change directory back to where user ran script
+echo "{}" > package.json
 npm install grunt --save-dev
-npm install
-npm update
 grunt exec
 grunt less
+
+#change directory back to where user ran script
 cd -
