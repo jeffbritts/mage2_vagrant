@@ -44,7 +44,7 @@ rm var/.maintenance.flag
 
 if [[ -n $EE ]]; then
     echo "[+] Install Enterprise Edition"
-    cp -rp /vagrant/data/magento2ee/* /vagrant/data/magento2
+    rsync -rv --exclude=.git /vagrant/data/magento2ee/* /vagrant/data/magento2
 fi
 
 if [[ -n $SAMPLE_DATA ]]; then
@@ -84,10 +84,12 @@ install_cmd="./bin/magento setup:install \
 
 eval ${install_cmd}
 
-echo "{}" > package.json
-npm install grunt --save-dev
-grunt exec
-grunt less
+#echo "{}" > package.json
+#npm install grunt --save-dev
+#npm install
+#npm update
+#grunt exec
+#grunt less
 
 #change directory back to where user ran script
 cd -
